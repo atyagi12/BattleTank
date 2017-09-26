@@ -23,5 +23,13 @@ void ATankAIController::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("Possessing AI Tank %s"), *ControlTank->GetName());
 	}
 
+	UE_LOG(LogTemp, Warning, TEXT("Player controller is %s"), *(GetPlayerTank()->GetName()));
+
+}
+
+ATank * ATankAIController::GetPlayerTank() const
+{
+
+	return Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 }
 

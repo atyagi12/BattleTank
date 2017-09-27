@@ -25,3 +25,18 @@ void ATankPlayerController::BeginPlay()
 	}
 
 }
+
+void ATankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	AimTowardsCrossHair();
+}
+
+void ATankPlayerController::AimTowardsCrossHair()
+{
+	if (!GetControlledTank()) return;
+
+	// Get world location of line trace from crosshair
+	// If landscape hit, rotate barrel to point to location
+}

@@ -28,6 +28,10 @@ public:
 	// Return an OUT parameter, true if hit landscape
 	bool GetSightRayHitLocation(FVector& HitLocation) const;
 
+	bool GetLookDirection(FVector2D ScreenLocation, FVector& WorldDirection) const;
+
+	bool GetLookVectorHitLocation(FVector& HitLocation, FVector WorldDirection) const;
+
 private:
 
 	UPROPERTY(EditAnywhere)
@@ -35,4 +39,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float CrossHairYLocation = 0.33333f;
+
+	UPROPERTY(EditAnywhere)
+	float LineTraceRange = 100000;
+
+
 };

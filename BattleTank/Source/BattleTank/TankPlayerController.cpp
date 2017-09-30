@@ -41,12 +41,9 @@ void ATankPlayerController::AimTowardsCrossHair()
 
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		// UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString());
+		GetControlledTank()->AimAt(HitLocation);
 	}
 
-	
-
-	// Get world location of line trace from crosshair
 	// If landscape hit, rotate barrel to point to location
 }
 
@@ -72,16 +69,14 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector & HitLocation) const
 		FHitResult HitResult;
 		if (GetLookVectorHitLocation(HitLocation, WorldDirection))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString());
+			return true;
 		}
 		
 
 	}
 
-
-	
-	HitLocation = FVector(1.0);
-	return true;
+	HitLocation = FVector(0);
+	return false;
 }
 
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector & WorldDirection) const

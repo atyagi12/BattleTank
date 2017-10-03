@@ -7,5 +7,6 @@
 
 void UTankBarrel::Elevate(float DegreesPerSecond)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Degrees Per Second: %f"), DegreesPerSecond);
+	auto Time = GetWorld()->GetTimeSeconds();
+	UE_LOG(LogTemp, Warning, TEXT("%f: Degrees Per Second: %f"), Time, DegreesPerSecond);
 }

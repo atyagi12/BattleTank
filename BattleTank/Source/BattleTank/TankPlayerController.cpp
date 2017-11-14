@@ -3,18 +3,19 @@
 
 #include "BattleTank.h"
 #include "TankPlayerController.h"
-#include "Tank.h"
+#include "TankAimingComponent.h"
 
-
-ATank* ATankPlayerController::GetControlledTank() const 
-{
-	return Cast<ATank>(GetPawn());
-
-}
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(AimingComponent)) {
+		return;
+	}
+	FoundAimingComponent(AimingComponent);
+
+	
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -26,13 +27,16 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimTowardsCrossHair()
 {
-	if (!GetControlledTank()) return;
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(AimingComponent)) {
+		return;
+	}
 
 	FVector HitLocation; // Out parameter
 
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		GetControlledTank()->AimAt(HitLocation);
+		AimingComponent->AimAt(HitLocation);
 	}
 
 	// If landscape hit, rotate barrel to point to location

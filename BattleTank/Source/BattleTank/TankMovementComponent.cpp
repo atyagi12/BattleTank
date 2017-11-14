@@ -20,7 +20,7 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
 
 void UTankMovementComponent::Initialize(UTankTrack * LeftTrackToSet, UTankTrack * RightTrackToSet)
 {
-	if (!LeftTrackToSet || !RightTrackToSet) return;
+	if (!ensure(LeftTrackToSet) || !ensure(RightTrackToSet)) return;
 
 	LeftTrack = LeftTrackToSet;
 	RightTrack = RightTrackToSet;

@@ -6,6 +6,7 @@
 #include "TankAimingComponent.generated.h"
 
 // Enum for aiming state
+class AProjectile;
 
 UENUM()
 enum class EFiringState : uint8
@@ -23,14 +24,15 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
-	// Sets default values for this component's properties
-	UTankAimingComponent();
-
-	void AimAt(FVector HitLocation);
+public:
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
 		void Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
+
+	void AimAt(FVector HitLocation);
+
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+		void Fire();
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
@@ -41,12 +43,26 @@ protected:
 
 private:
 
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		float LaunchSpeed = 1000000;				// 1000 m/s
+	UTankAimingComponent();
+
+	void MoveBarrelTowards(FVector AimDirection);
 
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 
-	void MoveBarrelTowards(FVector AimDirection);
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float LaunchSpeed = 1000000;				// 1000 m/s
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		TSubclassOf<AProjectile> ProjectileBlueprint;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float ReloadTimeInSeconds = 3;
+
+	double LastFireTime = 0;
+
+
+
+	
 	
 };

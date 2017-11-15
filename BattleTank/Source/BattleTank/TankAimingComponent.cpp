@@ -12,7 +12,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
 }
@@ -22,7 +22,7 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	LastFireTime = FPlatformTime::Seconds();
 	// ...
 	
 }
@@ -85,13 +85,19 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 
 }
 
+void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Aim comp ticking"));
+	if ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds)
+	{
+		FiringState = EFiringState::Reloading;
+	}
+}
+
 void UTankAimingComponent::Fire()
 {
 
-	bool IsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-
-	if (Barrel && IsReloaded)
-	{
+	if (FiringState != EFiringState::Reloading) {
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")),
@@ -100,6 +106,8 @@ void UTankAimingComponent::Fire()
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
 	}
+
+	bool IsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
 
 
 }

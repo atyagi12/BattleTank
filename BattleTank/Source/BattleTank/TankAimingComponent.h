@@ -36,7 +36,7 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
-		EFiringState FiringState = EFiringState::Locked;
+		EFiringState FiringState = EFiringState::Reloading;
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -58,6 +58,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float ReloadTimeInSeconds = 3;
+
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+
 
 	double LastFireTime = 0;
 

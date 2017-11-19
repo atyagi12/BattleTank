@@ -34,8 +34,9 @@ void ATankPlayerController::AimTowardsCrossHair()
 	}
 
 	FVector HitLocation; // Out parameter
+	bool bGotHitLocation = GetSightRayHitLocation(HitLocation);
 
-	if (GetSightRayHitLocation(HitLocation))
+	if (bGotHitLocation)
 	{
 		AimingComponent->AimAt(HitLocation);
 	}

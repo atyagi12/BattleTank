@@ -4,7 +4,29 @@
 #include "BattleTank.h"
 #include "TankPlayerController.h"
 #include "TankAimingComponent.h"
+#include "Tank.h"
 
+void ATankPlayerController::SetPawn(APawn * InPawn)
+{
+	Super::SetPawn(InPawn);
+	if (InPawn)
+	{
+		auto PossessedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossessedTank)) return;
+
+		PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPossessedTankDeath);
+	}
+}
+
+void ATankPlayerController::OnPossessedTankDeath()
+{
+	if (!GetPawn()) return;
+
+	GetPawn()->DetachFromControllerPendingDestroy();
+
+	UE_LOG(LogTemp, Warning, TEXT("Player tank death"));
+
+}
 
 void ATankPlayerController::BeginPlay()
 {
